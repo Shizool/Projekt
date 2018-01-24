@@ -1,2 +1,4 @@
 # Projekt
-ProjektChickenInvaders
+Projekt "Chicken Invaders"
+
+ver 0.1
