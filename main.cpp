@@ -77,7 +77,7 @@ void logo (void)
 void menu (void)
 {
     cout << "STEROWANIE" << endl;
-    cout << "PORUSZANIE LEWO/PRAWO - a/d" << endl;
+    cout << "PORUSZANIE LEWO/PRAWO - 4/6 (numpad)" << endl;
     cout << "STRZAL - SPACJA" << endl;
     cout << "WYJSCIE Z GRY- q" << endl << endl;
     cout << "WYBIERZ POZIOM TRUDNOSCI" << endl;
@@ -239,11 +239,11 @@ static void update_display(void)
 
 void player_control (void)
 {
-    if (current_getch == 97)
+    if (current_getch == 52)
     {
         if(playerX > 1 )  playerX--;
     }
-    if (current_getch == 100)
+    if (current_getch == 54)
     {
         if(playerX < 48 ) playerX++;
     }
@@ -442,8 +442,8 @@ int main(void)
         numberOfEnemies=60;
         diffE=100;
         diffA=2000;
-        diffB=200;
-        diffB1=10;
+        diffB=240;
+        diffB1=14;
         for (int i=0; i<20; i++)
         {
             insertEnemies(p, n, i*2+2, 2);
@@ -462,7 +462,7 @@ int main(void)
         return 0;
     }
     screen_init();
-    porgramSpeed(5);  // W PRZYPADKU ZBYT DUZEJ SZYBKOSCI, NALEZY ZMNIEJSZYC TA WARTOSC
+    porgramSpeed(7);  // W PRZYPADKU ZBYT DUZEJ SZYBKOSCI, NALEZY ZMNIEJSZYC TA WARTOSC
     while (doloop)
     {
     current_getch = getch();
