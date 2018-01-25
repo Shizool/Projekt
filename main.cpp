@@ -17,12 +17,25 @@ int counterS, counterE, counterA, counterB, counterB1;
 int numberOfEnemies;
 int score;
 boolean strike = false;
-int poziom, diffE, diffA, randBomb, diffB, diffB1;
+int poziom, diffE, diffA, diffB, diffB1, speedS=10;
 int LR;
 int ammo = 5;
 boolean reloaded = true;
-int bombY=200, bombX=200;
+int bombYA=200, bombXA=200;
+int bombYB=300, bombXB=300;
+int bombYC=400, bombXC=400;
 
+
+
+void porgramSpeed (int speed)
+{
+    speed = speed;
+    diffE = diffE/speed;
+    diffA = diffA/speed;
+    diffB = diffB/speed;
+    diffB1 = diffB1/speed;
+    speedS = speedS/speed;
+}
 
 struct enemy
 {
@@ -39,9 +52,30 @@ bool isEmpty(enemy *p)
         return false;
 }
 
+void logo (void)
+{
+    cout << "  /$$$$$$  /$$   /$$ /$$$$$$  /$$$$$$  /$$   /$$ /$$$$$$$$ /$$   /$$                       " << endl;
+    cout << " /$$__  $$| $$  | $$|_  $$_/ /$$__  $$| $$  /$$/| $$_____/| $$$ | $$                       " << endl;
+    cout << "| $$  \__/| $$  | $$  | $$  | $$  \__/| $$ /$$/ | $$      | $$$$| $$                       " << endl;
+    cout << "| $$      | $$$$$$$$  | $$  | $$      | $$$$$/  | $$$$$   | $$ $$ $$                       " << endl;
+    cout << "| $$      | $$__  $$  | $$  | $$      | $$  $$  | $$__/   | $$  $$$$                       " << endl;
+    cout << "| $$    $$| $$  | $$  | $$  | $$    $$| $$\  $$ | $$      | $$\  $$$                       " << endl;
+    cout << "|  $$$$$$/| $$  | $$ /$$$$$$|  $$$$$$/| $$ \  $$| $$$$$$$$| $$ \  $$                       " << endl;
+    cout << " \______/ |__/  |__/|______/ \______/ |__/  \__/|________/|__/  \__/                       " << endl;
+    cout << "                                                                                           " << endl;
+    cout << "             /$$$$$$ /$$   /$$ /$$    /$$  /$$$$$$  /$$$$$$$  /$$$$$$$$ /$$$$$$$   /$$$$$$ " << endl;
+    cout << "            |_  $$_/| $$$ | $$| $$   | $$ /$$__  $$| $$__  $$| $$_____/| $$__  $$ /$$__  $$" << endl;
+    cout << "              | $$  | $$$$| $$| $$   | $$| $$  \ $$| $$  \ $$| $$      | $$  \ $$| $$  \__/" << endl;
+    cout << "              | $$  | $$ $$ $$|  $$ / $$/| $$$$$$$$| $$  | $$| $$$$$   | $$$$$$$/|  $$$$$$ " << endl;
+    cout << "              | $$  | $$  $$$$ \  $$ $$/ | $$__  $$| $$  | $$| $$__/   | $$__  $$ \____  $$" << endl;
+    cout << "              | $$  | $$\  $$$  \  $$$/  | $$  | $$| $$  | $$| $$      | $$  \ $$ /$$  \ $$" << endl;
+    cout << "             /$$$$$$| $$ \  $$   \  $/   | $$  | $$| $$$$$$$/| $$$$$$$$| $$  | $$|  $$$$$$/" << endl;
+    cout << "            |______/|__/  \__/    \_/    |__/  |__/|_______/ |________/|__/  |__/ \______/ " << endl;
+    cout << endl;
+}
+
 void menu (void)
 {
-    cout << "CHICKEN INVADERS" << endl << endl;
     cout << "STEROWANIE" << endl;
     cout << "PORUSZANIE LEWO/PRAWO - a/d" << endl;
     cout << "STRZAL - SPACJA" << endl;
@@ -250,7 +284,7 @@ void shoot (void)
        ammo--;
        strike = false;
     }
-    if (counterS == 10)
+    if (counterS == speedS)
     {
         mvwprintw(screen,shootY,shootX," ");
         updateShoot();
@@ -258,42 +292,110 @@ void shoot (void)
     }
 }
 
-void initBomb (void)
+void initBombA (void)
 {
-    bombY = 2+(rand()%randBomb);
-    bombX = 1+(rand()%48);
+    bombYA = 2;
+    bombXA = 1+(rand()%48);
 }
 
-void updateBomb (void)
+void updateBombA (void)
 {
-    if(bombY < 27)
+    if(bombYA < 27)
        {
-           bombY++;
-           mvwprintw(screen,bombY,bombX,"*");
+           bombYA++;
+           mvwprintw(screen,bombYA,bombXA,"*");
        }
 }
 
-void bomb (void)
+void bombA (void)
 {
     if (counterB == diffB)
     {
-        mvwprintw(screen,bombY,bombX," ");
-        initBomb();
+        mvwprintw(screen,bombYA,bombXA," ");
+        initBombA();
+    }
+    if (counterB1 == diffB1)
+    {
+        mvwprintw(screen,bombYA,bombXA," ");
+        updateBombA();
+    }
+}
+
+void initBombB (void)
+{
+    bombYB = 2;
+    bombXB = 1+(rand()%48);
+}
+
+void updateBombB (void)
+{
+    if(bombYB < 27)
+       {
+           bombYB++;
+           mvwprintw(screen,bombYB,bombXB,"*");
+       }
+}
+
+void bombB (void)
+{
+    if (counterB == diffB+50)
+    {
+        mvwprintw(screen,bombYB,bombXB," ");
+        initBombB();
+    }
+    if (counterB1 == diffB1)
+    {
+        mvwprintw(screen,bombYB,bombXB," ");
+        updateBombB();
+    }
+}
+
+void initBombC (void)
+{
+    bombYC = 2;
+    bombXC = 1+(rand()%48);
+}
+
+void updateBombC (void)
+{
+    if(bombYC < 27)
+       {
+           bombYC++;
+           mvwprintw(screen,bombYC,bombXC,"*");
+       }
+}
+
+void bombC (void)
+{
+    if (counterB == diffB+100)
+    {
+        mvwprintw(screen,bombYC,bombXC," ");
+        initBombC();
         counterB = 0;
     }
     if (counterB1 == diffB1)
     {
-        mvwprintw(screen,bombY,bombX," ");
-        updateBomb();
+        mvwprintw(screen,bombYC,bombXC," ");
+        updateBombC();
         counterB1 = 0;
     }
 }
 
 int life(void)
 {
-    if(bombY == playerY)
+    if(bombYA == playerY)
     {
-        if(bombX == playerX)
+        if(bombXA == playerX)
+            return 0;
+    }
+    if(bombYB == playerY)
+    {
+        if(bombXB == playerX)
+            return 0;
+    }
+    if(bombYC == playerY)
+    {
+        if(bombXC == playerX)
             return 0;
     }
     else
@@ -304,6 +406,7 @@ int main(void)
 {
     enemy *p = NULL;
     enemy *n = NULL;
+    logo();
     menu();
     cin >> poziom;
     if (poziom == 1)
@@ -311,9 +414,8 @@ int main(void)
         numberOfEnemies=20;
         diffE=300;
         diffA=1000;
-        randBomb=1;
-        diffB=500;
-        diffB1=15;
+        diffB=450;
+        diffB1=20;
         for (int i=0; i<numberOfEnemies; i++)
         {
             insertEnemies(p, n, i*2+2, 2);
@@ -324,9 +426,8 @@ int main(void)
         numberOfEnemies = 40;
         diffE = 200;
         diffA = 1500;
-        randBomb = 2;
-        diffB=450;
-        diffB1=13;
+        diffB=400;
+        diffB1=15;
         for (int i=0; i<20; i++)
         {
             insertEnemies(p, n, i*2+2, 2);
@@ -341,8 +442,7 @@ int main(void)
         numberOfEnemies=60;
         diffE=100;
         diffA=2000;
-        randBomb=3;
-        diffB=400;
+        diffB=200;
         diffB1=10;
         for (int i=0; i<20; i++)
         {
@@ -362,16 +462,19 @@ int main(void)
         return 0;
     }
     screen_init();
+    porgramSpeed(5);  // W PRZYPADKU ZBYT DUZEJ SZYBKOSCI, NALEZY ZMNIEJSZYC TA WARTOSC
     while (doloop)
     {
     current_getch = getch();
     if (current_getch == 113) doloop = 0;
     if (score == numberOfEnemies) doloop = 0;
-    if (life() == 0) doloop = 0;
     delete_player();
     shoot();
     shootDown(p);
-    bomb();
+    bombA();
+    bombB();
+    bombC();
+    if (life() == 0) doloop = 0;
     moveEnemies1(p);
     moveEnemies2(p);
     displayEnemies(p);
